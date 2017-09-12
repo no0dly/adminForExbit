@@ -32,6 +32,11 @@ export class Homepage extends Component {
       dispatch(actions.ordersRemove(response.order_id))
     })
 
+    socket.on('my_orders_update', (response) => {
+      console.log('my_orders_update')
+      dispatch(actions.ordersUpdate(response.order_id, response.amount))
+    })
+
     socket.on('user_info', (response) => {
       console.log('user_info')
       dispatch(actions.updateUser(response))
