@@ -9,9 +9,9 @@ import * as actions from '../../actions'
 import * as io from '../homepage/Homepage'
 
 export class Nav extends Component {
-  showPopup(mode) {
+  showPopup() {
     const { dispatch } = this.props
-    dispatch(actions.openLoginPopup(mode))
+    dispatch(actions.openLoginPopup())
   }
   logOut(e) {
     const { dispatch } = this.props
@@ -56,13 +56,7 @@ export class Nav extends Component {
         title: 'login',
         href: '',
         rounded: true,
-        onClick: this.showPopup.bind(this, 'login')
-      },
-      {
-        title: 'sign up',
-        href: '',
-        rounded: true,
-        onClick: this.showPopup.bind(this, 'signUp')
+        onClick: this.showPopup.bind(this)
       }
     ]
     if (user.username) {

@@ -33,7 +33,7 @@ export class MyorderTable extends Component {
 
     return data.map((item) => {
       const date = moment.unix(item.created_at).format('DD/MM/YYYY hh:mm:ss')
-      const { side, amount, price } = item
+      const { side, amount, price, user } = item
       const id = item.order_id
 
       return (
@@ -49,6 +49,9 @@ export class MyorderTable extends Component {
           </td>
           <td>
             { price }
+          </td>
+          <td>
+            { user }
           </td>
           <ActionCell>
             <a onClick={ this.openConfirmPopup.bind(this, id) }

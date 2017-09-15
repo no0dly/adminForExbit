@@ -1,20 +1,12 @@
-export const openLoginPopup = (mode) => {
+export const openLoginPopup = () => {
   return {
-    type: 'OPEN_LOGIN_POPUP',
-    mode
+    type: 'OPEN_LOGIN_POPUP'
   }
 }
 
 export const closeLoginPopup = () => {
   return {
     type: 'CLOSE_LOGIN_POPUP'
-  }
-}
-
-export const changeLoginPopupMode = (newMode) => {
-  return {
-    type: 'CHANGE_LOGIN_POPUP_MODE',
-    newMode
   }
 }
 

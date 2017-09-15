@@ -1,8 +1,8 @@
 module.exports = {
   En: {
     openOrdersHeaders: {
-      headerNames: [ 'Date', 'Type', 'Amount BTC', 'Price USD', 'Action', 'User' ],
-      fieldNames: [ 'date', 'type', 'amount', 'price', 'action', 'user' ]
+      headerNames: [ 'Date', 'Type', 'Amount BTC', 'Price USD', 'User', 'Action' ],
+      fieldNames: [ 'date', 'type', 'amount', 'price', 'user', 'action' ]
     }
   }
 }

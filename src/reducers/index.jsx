@@ -2,19 +2,11 @@ export const loginPopupReducer = (state = { showed: false }, action) => {
   switch (action.type) {
     case 'OPEN_LOGIN_POPUP':
       return {
-        showed: true,
-        mode: action.mode
+        showed: true
       }
     case 'CLOSE_LOGIN_POPUP':
       return {
-        showed: false,
-        mode: undefined
-      }
-    case 'CHANGE_LOGIN_POPUP_MODE':
-      return {
-        ...state,
-        mode: action.newMode,
-        error: undefined
+        showed: false
       }
     case 'SET_ERROR':
       return {

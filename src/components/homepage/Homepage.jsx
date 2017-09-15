@@ -4,7 +4,7 @@ import { connect } from 'react-redux'
 
 import OrderTable from '../tables/orderTable'
 import LoginPopup from '../LoginPopup'
-// import ConfirmPopup from '../ConfirmPopup'
+import ConfirmPopup from '../ConfirmPopup'
 
 import tableConstants from '../../constants/tableTitles'
 
@@ -18,21 +18,21 @@ export class Homepage extends Component {
   componentDidMount() {
     const { dispatch } = this.props
 
-    socket.on('my_orders_init', (response) => {
-      console.log('my_orders_init')
+    socket.on('full_orders_list_init', (response) => {
+      console.log('full_orders_list_init')
       dispatch(actions.ordersInit(response))
     })
-    socket.on('my_orders_add', (response) => {
-      console.log('my_orders_add')
+    socket.on('full_orders_list_add', (response) => {
+      console.log('orders_add')
       dispatch(actions.ordersAdd(response))
     })
 
-    socket.on('my_orders_remove', (response) => {
-      console.log('my_orders_remove')
+    socket.on('full_orders_list_remove', (response) => {
+      console.log('orders_remove')
       dispatch(actions.ordersRemove(response.order_id))
     })
 
-    socket.on('my_orders_update', (response) => {
+    socket.on('full_orders_list_update', (response) => {
       console.log('my_orders_update')
       dispatch(actions.ordersUpdate(response.order_id, response.amount))
     })
@@ -41,35 +41,22 @@ export class Homepage extends Component {
       console.log('user_info')
       dispatch(actions.updateUser(response))
     })
-
-    socket.on('login_result', (response) => {
-      console.log('login_result')
-      if (!response.success) {
-        dispatch(actions.setError(response.error))
-      } else {
-        dispatch(actions.closeLoginPopup())
-      }
-    })
-
-    socket.on('register_result', (response) => {
-      console.log('register_result')
-      if (!response.success) {
-        dispatch(actions.setError(response.error))
-      } else {
-        dispatch(actions.closeLoginPopup())
-      }
-    })
   }
   onSubmit(data) {
+    const { dispatch } = this.props
     const credentials = {
       login: data.login,
       password: data.password
     }
-    if (data.action === 'login') {
-      socket.emit('login', credentials)
-    } else if (data.action === 'signUp') {
-      socket.emit('register', credentials)
-    }
+
+    socket.emit('login', credentials, (response) => {
+      console.log('login')
+      if (!response.success) {
+        dispatch(actions.setError(response.error))
+      } else {
+        dispatch(actions.closeLoginPopup())
+      }
+    })
   }
   onLogOut() {
     const { dispatch } = this.props
@@ -79,6 +66,19 @@ export class Homepage extends Component {
   onConfirm() {
     const { dispatch } = this.props
     dispatch(actions.closeConfirmPopup())
+  }
+  removeMyorder() {
+    const { orderId } = this.props
+    const callback = (response) => {
+      console.log('order_remove_result')
+      if (response.success) {
+        this.notify.success('Success', `${response.success}, order ID: ${orderId}`, 4000)
+      } else {
+        this.notify.error('Error', `${response.error}`, 4000)
+      }
+    }
+    socket.emit('order_remove', { 'order_id': orderId }, callback.bind(this))
+    this.onConfirm(orderId)
   }
   renderMyOrderTable() {
     const { user } = this.props
@@ -102,7 +102,8 @@ export class Homepage extends Component {
         <div className="columns is-multiline">
           { this.renderMyOrderTable() }
         </div>
-        <LoginPopup onSubmit={ this.onSubmit } />
+        <LoginPopup onSubmit={ this.onSubmit.bind(this) } />
+        <ConfirmPopup onSubmit={ this.removeMyorder.bind(this) } />
       </div>
     )
   }
