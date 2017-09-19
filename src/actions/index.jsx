@@ -94,7 +94,7 @@ export const usersListAdd = (user) => {
 
 export const usersListUpdate = (user) => {
   return {
-    type: 'USERS_LIST_ADD',
+    type: 'USERS_LIST_UPDATE',
     user
   }
 }
