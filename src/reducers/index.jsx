@@ -88,7 +88,7 @@ export const usersListReducer = (state = [], action) => {
           for (let value in user.balance) {
             user.balance[value] = action.user.balance[value]
           }
-          user.group = action.group
+          user.group = action.user.group
         }
         return user
       })
