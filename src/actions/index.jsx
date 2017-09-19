@@ -77,3 +77,31 @@ export const ordersUpdate = (id, amount) => {
     amount
   }
 }
+
+export const usersListInit = (users) => {
+  return {
+    type: 'USERS_LIST_INIT',
+    users
+  }
+}
+
+export const usersListAdd = (user) => {
+  return {
+    type: 'USERS_LIST_ADD',
+    user
+  }
+}
+
+export const usersListUpdate = (user) => {
+  return {
+    type: 'USERS_LIST_ADD',
+    user
+  }
+}
+
+export const userGroupsListInit = (groups) => {
+  return {
+    type: 'USER_GROUPS_LIST_INIT',
+    groups
+  }
+}

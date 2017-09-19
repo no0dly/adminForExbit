@@ -1,8 +1,10 @@
 import React, { Component } from 'react'
-// import styled from 'styled-components'
+import styled from 'styled-components'
 import { connect } from 'react-redux'
+import ReactNotify from 'react-notify'
 
 import OrderTable from '../tables/orderTable'
+import UserTable from '../tables/userTable'
 import LoginPopup from '../LoginPopup'
 import ConfirmPopup from '../ConfirmPopup'
 
@@ -23,23 +25,40 @@ export class Homepage extends Component {
       dispatch(actions.ordersInit(response))
     })
     socket.on('full_orders_list_add', (response) => {
-      console.log('orders_add')
+      console.log('full_orders_list_add')
       dispatch(actions.ordersAdd(response))
     })
 
     socket.on('full_orders_list_remove', (response) => {
-      console.log('orders_remove')
+      console.log('full_orders_list_remove')
       dispatch(actions.ordersRemove(response.order_id))
     })
 
     socket.on('full_orders_list_update', (response) => {
-      console.log('my_orders_update')
+      console.log('full_orders_list_update')
       dispatch(actions.ordersUpdate(response.order_id, response.amount))
     })
 
     socket.on('user_info', (response) => {
       console.log('user_info')
       dispatch(actions.updateUser(response))
+    })
+
+    socket.on('users_list_init', (response) => {
+      console.log('users_list_init')
+      dispatch(actions.usersListInit(response))
+    })
+    socket.on('users_list_add', (response) => {
+      console.log('users_list_add')
+      dispatch(actions.usersListAdd(response))
+    })
+    socket.on('users_list_update', (response) => {
+      console.log('users_list_update')
+      dispatch(actions.usersListUpdate(response))
+    })
+    socket.on('usergroups_list', (response) => {
+      console.log('usergroups_list')
+      dispatch(actions.userGroupsListInit(response))
     })
   }
   onSubmit(data) {
@@ -87,8 +106,8 @@ export class Homepage extends Component {
 
     if (user.username) {
       return (
-        <div className="column is-half">
-          <OrderTable title="My Open Orders"
+        <div className="column is-12">
+          <OrderTable title="Open Orders"
             headers={ openOrdersHeaders }
             data={ orders }
             height="233px" />
@@ -96,12 +115,34 @@ export class Homepage extends Component {
       )
     }
   }
+  renderTableThatHides(headers, data, height) {
+    const { user, userGroupsList } = this.props
+    if (user.username) {
+      return (
+        <div className="column is-12">
+          <UserTable title="Users List"
+            headers={ headers }
+            data={ data }
+            height={ height }
+            userGroupsList={ userGroupsList } />
+        </div>
+      )
+    }
+  }
   render() {
+    const {
+      usersListHeaders
+    } = tableConstants.En
+    const { usersList } = this.props
     return (
       <div>
         <div className="columns is-multiline">
           { this.renderMyOrderTable() }
+          { this.renderTableThatHides(usersListHeaders, usersList, '233px') }
         </div>
+        <NotifyWrap>
+          <ReactNotify ref={ (com) => this.notify = com } />
+        </NotifyWrap>
         <LoginPopup onSubmit={ this.onSubmit.bind(this) } />
         <ConfirmPopup onSubmit={ this.removeMyorder.bind(this) } />
       </div>
@@ -109,11 +150,63 @@ export class Homepage extends Component {
   }
 }
 
+const NotifyWrap = styled.div`
+  .notify-container {
+    display: flex;
+    flex-direction: column;
+    flex-wrap: wrap;
+    justify-content: flex-end;
+    align-items: flex-start;
+    align-content: flex-start;
+    position: fixed;
+    top: 0;
+    right: 0;
+    z-index: 99999;
+  }
+
+  .notify-item {
+    width: 250px;
+    margin: 5px 10px;
+    color: #FFF;
+    border-radius: 5px;
+  }
+
+  .notify-item:hover {
+    opacity: 0.8;
+    box-shadow: 0 0 10px 0 rgb(15, 15, 15);
+  }
+
+  .notify-item > p {
+    font-family: 'Lora', serif;
+    margin: 10px;
+    opacity: .8;
+  }
+
+  .notify-item.success {
+    background-color: rgba(81, 163, 81, 0.4);
+  }
+
+  .notify-item.error {
+    background-color: rgba(203, 100, 94, 0.8);
+  }
+
+  .notify-item.info {
+    background-color: rgba(33, 150, 243, 0.8);
+  }
+
+  .notify-title {
+    font-weight: 700;
+  }
+`
+
 export default connect(
   (state) => {
     return {
       user: state.user,
-      orders: state.orders
+      orders: state.orders,
+      orderId: state.confirmPopup.orderId,
+      usersList: state.usersList,
+      userGroupsList: state.userGroupsList
     }
   }
 )(Homepage)

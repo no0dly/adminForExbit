@@ -75,3 +75,33 @@ export const confirmPopupReducer = (state = { showed: false }, action) => {
       return state
   }
 }
+
+export const usersListReducer = (state = [], action) => {
+  switch (action.type) {
+    case 'USERS_LIST_INIT':
+      return action.users
+    case 'USERS_LIST_ADD':
+      return [ action.user, ...state ]
+    case 'USERS_LIST_UPDATE':
+      return state.map((user) => {
+        if (user.user_id === action.user.user_id) {
+          for (let value in user.balance) {
+            user.balance[value] = action.user.balance[value]
+          }
+          user.group = action.group
+        }
+        return user
+      })
+    default:
+      return state
+  }
+}
+
+export const userGroupsListReducer = (state = [], action) => {
+  switch (action.type) {
+    case 'USER_GROUPS_LIST_INIT':
+      return action.groups
+    default:
+      return state
+  }
+}
