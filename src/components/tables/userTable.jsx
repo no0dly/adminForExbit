@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import styled, { keyframes } from 'styled-components'
 import uuid from 'node-uuid'
+import UserTableGroup from './userTableGroup'
 
 export class UserTable extends Component {
   renderHeaders() {
@@ -19,11 +20,7 @@ export class UserTable extends Component {
           return <td key={ uuid() }>{ item[field][balanceValue] }</td>
         })
       } else if (field === 'group') {
-        return userGroupsList.map((group) => {
-          if (item[field] === group.id) {
-            return <td key={ uuid() }>{ group.name }</td>
-          }
-        })
+        return <UserTableGroup userId={ item.user_id } key={ uuid() } item={ item } field={ field } userGroupsList={ userGroupsList } />
       }
       return <td key={ uuid() }>{ item[field] }</td>
     })
@@ -66,6 +63,9 @@ const Wrap = styled.div`
   .title:not(:last-child), .subtitle:not(:last-child) {
     margin-bottom: 1rem;
   }
+  .table td {
+    vertical-align: middle;
+  }
 `
 
 const TableWrap = styled.div`
@@ -87,6 +87,7 @@ const TableRow = styled.tr`
   animation-name: ${adding};
   animation-duration: 2s;
   font-size: 0.75rem;
+  vertical-
   & .red {
     color: red;
   }
