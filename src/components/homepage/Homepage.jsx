@@ -5,6 +5,8 @@ import ReactNotify from 'react-notify'
 
 import OrderTable from '../tables/orderTable'
 import UserTable from '../tables/userTable'
+import NewUserTable from '../tables/newUserTable'
+import NewSortTable from '../tables/newSortTable'
 import LoginPopup from '../LoginPopup'
 import ConfirmPopup from '../ConfirmPopup'
 
@@ -19,7 +21,7 @@ export const socket = io(process.env.REACT_APP_WEBSOCKET_URL)
 export class Homepage extends Component {
   componentDidMount() {
     const { dispatch } = this.props
-
+    dispatch(actions.openLoginPopup())
     socket.on('full_orders_list_init', (response) => {
       console.log('full_orders_list_init')
       dispatch(actions.ordersInit(response))
@@ -42,6 +44,7 @@ export class Homepage extends Component {
     socket.on('user_info', (response) => {
       console.log('user_info')
       dispatch(actions.updateUser(response))
+      dispatch(actions.closeLoginPopup())
     })
 
     socket.on('users_list_init', (response) => {
@@ -115,6 +118,19 @@ export class Homepage extends Component {
       )
     }
   }
+  renderSortTable() {
+    const { user } = this.props
+    const { orders } = this.props
+    // const { openOrdersHeaders } = tableConstants.En
+
+    if (user.username) {
+      return (
+        <div className="column is-12">
+          <NewSortTable orders={ orders } />
+        </div>
+      )
+    }
+  }
   renderTableThatHides(headers, data, height) {
     const { user, userGroupsList } = this.props
     if (user.username) {
@@ -129,6 +145,18 @@ export class Homepage extends Component {
       )
     }
   }
+  renderNewUserTable(data) {
+    const { user, userGroupsList } = this.props
+    if (user.username) {
+      return (
+        <div className="column is-12">
+          <NewUserTable title="Users List"
+            data={ data }
+            userGroupsList={ userGroupsList } />
+        </div>
+      )
+    }
+  }
   render() {
     const {
       usersListHeaders
@@ -138,7 +166,9 @@ export class Homepage extends Component {
       <div>
         <div className="columns is-multiline">
           { this.renderMyOrderTable() }
+          { this.renderSortTable() }
           { this.renderTableThatHides(usersListHeaders, usersList, '233px') }
+          { this.renderNewUserTable(usersList) }
         </div>
         <NotifyWrap>
           <ReactNotify ref={ (com) => this.notify = com } />

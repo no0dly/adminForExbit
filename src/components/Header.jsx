@@ -12,6 +12,9 @@ const Header = (props) => {
       <LogoWrap to="/">
         <LogoImg src={ Logo } alt="Logo" />
       </LogoWrap>
+      <div className="">
+        <h2 className="title is-3"> Admin Panel </h2>
+      </div>
       <Nav />
     </Wrap>
   )
@@ -24,6 +27,9 @@ const Wrap = styled.div`
   &.container {
     margin-top: 35px;
     margin-bottom: 35px;
+  }
+  h2 {
+    margin-bottom: 0;
   }
 `
 

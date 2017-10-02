@@ -20,6 +20,7 @@ export class UserTable extends Component {
           return <td key={ uuid() }>{ item[field][balanceValue] }</td>
         })
       } else if (field === 'group') {
+        // debugger
         return <UserTableGroup userId={ item.user_id } key={ uuid() } item={ item } field={ field } userGroupsList={ userGroupsList } />
       }
       return <td key={ uuid() }>{ item[field] }</td>

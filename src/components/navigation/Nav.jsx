@@ -15,41 +15,41 @@ export class Nav extends Component {
   }
   logOut(e) {
     const { dispatch } = this.props
-
     io.socket.emit('logout')
     dispatch(actions.clearUser())
+    dispatch(actions.openLoginPopup())
   }
 
   render() {
     const { user } = this.props
 
-    const nav = [
-      {
-        title: 'Home',
-        href: '/',
-        rounded: false
-      },
-      {
-        title: 'trade',
-        href: '/trade',
-        rounded: false
-      },
-      {
-        title: 'about',
-        href: '/about',
-        rounded: false
-      },
-      {
-        title: 'faq',
-        href: '/faq',
-        rounded: false
-      },
-      {
-        title: 'news',
-        href: '/news',
-        rounded: false
-      }
-    ]
+    // const nav = [
+    //   {
+    //     title: 'Home',
+    //     href: '/',
+    //     rounded: false
+    //   },
+    //   {
+    //     title: 'trade',
+    //     href: '/trade',
+    //     rounded: false
+    //   },
+    //   {
+    //     title: 'about',
+    //     href: '/about',
+    //     rounded: false
+    //   },
+    //   {
+    //     title: 'faq',
+    //     href: '/faq',
+    //     rounded: false
+    //   },
+    //   {
+    //     title: 'news',
+    //     href: '/news',
+    //     rounded: false
+    //   }
+    // ]
 
     let actions = [
       {
@@ -74,11 +74,11 @@ export class Nav extends Component {
         }
       ]
     }
-    const renderItems = () => {
-      return nav.map((item, idx) => {
-        return <NavItem key={ idx } { ...item } />
-      })
-    }
+    // const renderItems = () => {
+    //   return nav.map((item, idx) => {
+    //     return <NavItem key={ idx } { ...item } />
+    //   })
+    // }
 
     const renderActions = () => {
       return actions.map((item, idx) => {
@@ -88,7 +88,6 @@ export class Nav extends Component {
 
     return (
       <List>
-        { renderItems() }
         { renderActions() }
       </List>
     )
@@ -97,6 +96,7 @@ export class Nav extends Component {
 
 const List = styled.ul`
   display: flex;
+  justify-content: space-between;
 `
 
 export default connect(

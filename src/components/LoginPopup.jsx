@@ -51,7 +51,7 @@ export class LoginPopup extends Component {
             ref={ (form) => this.loginForm = form } >
             <header className="modal-card-head">
               <p className="modal-card-title">Login</p>
-              <button onClick={ this.onClick.bind(this) } href="#" className="delete" />
+              {/* <button onClick={ this.onClick.bind(this) } href="#" className="delete" /> */}
             </header>
             <section className="modal-card-body">
               <div className="field">
