@@ -152,10 +152,10 @@ export class userTableGroup extends Component {
   }
   render() {
     return (
-      <td>
+      <div>
         { this.renderContent() }
         { this.renderMessage() }
-      </td>
+      </div>
     )
   }
 }

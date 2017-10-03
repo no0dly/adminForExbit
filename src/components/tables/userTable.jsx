@@ -88,7 +88,6 @@ const TableRow = styled.tr`
   animation-name: ${adding};
   animation-duration: 2s;
   font-size: 0.75rem;
-  vertical-
   & .red {
     color: red;
   }

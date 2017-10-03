@@ -119,9 +119,7 @@ export class Homepage extends Component {
     }
   }
   renderSortTable() {
-    const { user } = this.props
-    const { orders } = this.props
-    // const { openOrdersHeaders } = tableConstants.En
+    const { user, orders } = this.props
 
     if (user.username) {
       return (
@@ -165,9 +163,7 @@ export class Homepage extends Component {
     return (
       <div>
         <div className="columns is-multiline">
-          { this.renderMyOrderTable() }
           { this.renderSortTable() }
-          { this.renderTableThatHides(usersListHeaders, usersList, '233px') }
           { this.renderNewUserTable(usersList) }
         </div>
         <NotifyWrap>
@@ -175,6 +171,7 @@ export class Homepage extends Component {
         </NotifyWrap>
         <LoginPopup onSubmit={ this.onSubmit.bind(this) } />
         <ConfirmPopup onSubmit={ this.removeMyorder.bind(this) } />
+        {this.props.children}
       </div>
     )
   }

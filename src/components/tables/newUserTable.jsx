@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-// import styled, { keyframes } from 'styled-components'
+import styled, { keyframes } from 'styled-components'
 // import uuid from 'node-uuid'
 import UserTableGroup from './userTableGroup'
 
@@ -9,18 +9,19 @@ import 'react-table/react-table.css'
 
 export class NewUserTable extends Component {
   render() {
-    const { title, data, userGroupsList } = this.props
+    const { data, userGroupsList } = this.props
 
     return (
-      <div>
-        <h3 className="title is-5">{title}</h3>
+      <Wrap>
         <ReactTable
           data={ data }
           filterable
+          showPagination={ false }
           defaultFilterMethod={ (filter, row) =>
             String(row[filter.id]) === filter.value }
           columns={ [
             {
+              Header: 'Users',
               columns: [
                 {
                   Header: 'User_id',
@@ -28,7 +29,8 @@ export class NewUserTable extends Component {
                   accessor: d => d.user_id,
                   filterMethod: (filter, rows) =>
                     matchSorter(rows, filter.value, { keys: ['user_id'] }),
-                  filterAll: true
+                  filterAll: true,
+                  minWidth: 50
                 },
                 {
                   Header: 'Username',
@@ -79,6 +81,7 @@ export class NewUserTable extends Component {
                   id: 'group',
                   accessor: d => d.group,
                   filterable: false,
+                  minWidth: 140,
                   Cell: (cell) => {
                     return (
                       <UserTableGroup userId={ cell.row.user_id } item={ cell.row._original } field="group" userGroupsList={ userGroupsList } />
@@ -89,13 +92,21 @@ export class NewUserTable extends Component {
               ]
             }
           ] }
-          defaultPageSize={ 10 }
           className="-striped -highlight"
         />
-      </div>
+      </Wrap>
     )
   }
 }
 
+const Wrap = styled.div`
+  .ReactTable .rt-tr {
+    align-items: center;
+  }
+  .ReactTable .rt-td {
+    font-size: 0.75rem;
+    padding: 0.25em 0.5em;
+  }
+`
 
 export default NewUserTable

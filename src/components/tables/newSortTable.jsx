@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import styled, { keyframes } from 'styled-components'
+import moment from 'moment'
 // import uuid from 'node-uuid'
 
 import matchSorter from 'match-sorter'
@@ -19,20 +20,23 @@ export class NewSortTable extends Component {
   render() {
     const { orders } = this.props
     return (
-      <div>
+      <Wrap>
         <ReactTable
           data={ orders }
           filterable
+          showPagination={ false }
           defaultFilterMethod={ (filter, row) =>
             String(row[filter.id]) === filter.value }
           columns={ [
             {
+              Header: 'Open Orders',
               columns: [
                 {
                   Header: 'Date',
                   id: 'date',
                   accessor: d => d.created_at,
-                  filterable: false
+                  filterable: false,
+                  Cell: ({ value }) => moment.unix(value).format('DD/MM/YYYY hh:mm:ss')
                 },
                 {
                   Header: 'Order ID',
@@ -90,13 +94,37 @@ export class NewSortTable extends Component {
               ]
             }
           ] }
-          defaultPageSize={ 10 }
           className="-striped -highlight"
         />
-      </div>
+      </Wrap>
     )
   }
 }
+const adding = keyframes`
+  0% { background-color: #00d1b2; }
+  33% { background-color: transparent; }
+  66% { background-color: #00d1b2; }
+  100% { background-color: transparent; }
+`
+
+const Wrap = styled.div`
+  .ReactTable .rt-tr {
+    align-items: center;
+  }
+  .ReactTable .rt-td {
+    font-size: 0.75rem;
+    padding: 0.25em 0.5em;
+  }
+  .rt-tr-group {
+    .rt-td {
+
+    }
+    .animated {
+      animation-name: ${adding};
+      animation-duration: 2s;
+    }
+  }
+`
 
 const ActionCell = styled.div`
   display: flex;
