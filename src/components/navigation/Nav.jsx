@@ -23,34 +23,6 @@ export class Nav extends Component {
   render() {
     const { user } = this.props
 
-    // const nav = [
-    //   {
-    //     title: 'Home',
-    //     href: '/',
-    //     rounded: false
-    //   },
-    //   {
-    //     title: 'trade',
-    //     href: '/trade',
-    //     rounded: false
-    //   },
-    //   {
-    //     title: 'about',
-    //     href: '/about',
-    //     rounded: false
-    //   },
-    //   {
-    //     title: 'faq',
-    //     href: '/faq',
-    //     rounded: false
-    //   },
-    //   {
-    //     title: 'news',
-    //     href: '/news',
-    //     rounded: false
-    //   }
-    // ]
-
     let actions = [
       {
         title: 'login',
@@ -74,11 +46,6 @@ export class Nav extends Component {
         }
       ]
     }
-    // const renderItems = () => {
-    //   return nav.map((item, idx) => {
-    //     return <NavItem key={ idx } { ...item } />
-    //   })
-    // }
 
     const renderActions = () => {
       return actions.map((item, idx) => {

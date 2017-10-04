@@ -3,14 +3,8 @@ import styled from 'styled-components'
 import { connect } from 'react-redux'
 import ReactNotify from 'react-notify'
 
-import OrderTable from '../tables/orderTable'
-import UserTable from '../tables/userTable'
-import NewUserTable from '../tables/newUserTable'
-import NewSortTable from '../tables/newSortTable'
 import LoginPopup from '../LoginPopup'
 import ConfirmPopup from '../ConfirmPopup'
-
-import tableConstants from '../../constants/tableTitles'
 
 import * as actions from '../../actions'
 
@@ -102,76 +96,31 @@ export class Homepage extends Component {
     socket.emit('order_remove', { 'order_id': orderId }, callback.bind(this))
     this.onConfirm(orderId)
   }
-  renderMyOrderTable() {
-    const { user } = this.props
-    const { orders } = this.props
-    const { openOrdersHeaders } = tableConstants.En
 
-    if (user.username) {
-      return (
-        <div className="column is-12">
-          <OrderTable title="Open Orders"
-            headers={ openOrdersHeaders }
-            data={ orders }
-            height="233px" />
-        </div>
-      )
-    }
-  }
-  renderSortTable() {
-    const { user, orders } = this.props
-
-    if (user.username) {
-      return (
-        <div className="column is-12">
-          <NewSortTable orders={ orders } />
-        </div>
-      )
-    }
-  }
-  renderTableThatHides(headers, data, height) {
-    const { user, userGroupsList } = this.props
-    if (user.username) {
-      return (
-        <div className="column is-12">
-          <UserTable title="Users List"
-            headers={ headers }
-            data={ data }
-            height={ height }
-            userGroupsList={ userGroupsList } />
-        </div>
-      )
-    }
-  }
-  renderNewUserTable(data) {
-    const { user, userGroupsList } = this.props
-    if (user.username) {
-      return (
-        <div className="column is-12">
-          <NewUserTable title="Users List"
-            data={ data }
-            userGroupsList={ userGroupsList } />
-        </div>
-      )
+  renderConfirm() {
+    const { showed } = this.props
+    if (showed) {
+      return <ConfirmPopup onSubmit={ this.removeMyorder.bind(this) } />
     }
   }
   render() {
-    const {
-      usersListHeaders
-    } = tableConstants.En
-    const { usersList } = this.props
+    const { children, user } = this.props
+    const renderContent = () => {
+      if (user.username) {
+        return children
+      }
+    }
     return (
       <div>
         <div className="columns is-multiline">
-          { this.renderSortTable() }
-          { this.renderNewUserTable(usersList) }
+          { renderContent() }
         </div>
         <NotifyWrap>
           <ReactNotify ref={ (com) => this.notify = com } />
         </NotifyWrap>
         <LoginPopup onSubmit={ this.onSubmit.bind(this) } />
-        <ConfirmPopup onSubmit={ this.removeMyorder.bind(this) } />
-        {this.props.children}
+        { this.renderConfirm() }
+
       </div>
     )
   }
@@ -230,10 +179,8 @@ export default connect(
   (state) => {
     return {
       user: state.user,
-      orders: state.orders,
       orderId: state.confirmPopup.orderId,
-      usersList: state.usersList,
-      userGroupsList: state.userGroupsList
+      showed: state.confirmPopup.showed
     }
   }
 )(Homepage)
