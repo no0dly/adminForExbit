@@ -16,7 +16,6 @@ export class NewUserTable extends Component {
         <ReactTable
           data={ data }
           filterable
-          showPagination={ false }
           defaultFilterMethod={ (filter, row) =>
             String(row[filter.id]) === filter.value }
           columns={ [
@@ -92,6 +91,10 @@ export class NewUserTable extends Component {
               ]
             }
           ] }
+          defaultPageSize={20}
+          style={{
+            height: "500px"
+          }}
           className="-striped -highlight"
         />
       </Wrap>

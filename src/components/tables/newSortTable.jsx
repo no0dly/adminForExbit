@@ -24,7 +24,6 @@ export class NewSortTable extends Component {
         <ReactTable
           data={ orders }
           filterable
-          showPagination={ false }
           defaultFilterMethod={ (filter, row) =>
             String(row[filter.id]) === filter.value }
           columns={ [
@@ -94,6 +93,10 @@ export class NewSortTable extends Component {
               ]
             }
           ] }
+          defaultPageSize={20}
+          style={{
+            height: "500px"
+          }}
           className="-striped -highlight"
         />
       </Wrap>
