@@ -20,7 +20,7 @@ export class ConfirmPopup extends Component {
 
   handleKeyDown(e) {
     if (e.keyCode === 13) {
-      this.props.onSubmit()
+      this.submitBtn.click()
     } else if (e.keyCode === 27) {
       this.onClose()
     }
@@ -59,7 +59,11 @@ export class ConfirmPopup extends Component {
             >
               Close
             </button>
-            <button className="button is-danger">
+            <button
+              type="submit"
+              className="button is-danger"
+              ref={ input => this.submitBtn = input }
+            >
               Yes, remove
             </button>
           </footer>

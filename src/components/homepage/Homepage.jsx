@@ -92,9 +92,9 @@ export class Homepage extends Component {
       } else {
         this.notify.error('Error', `${response.error}`, 4000)
       }
+      this.onConfirm()
     }
     socket.emit('order_remove', { 'order_id': orderId }, callback.bind(this))
-    this.onConfirm(orderId)
   }
 
   renderConfirm() {
