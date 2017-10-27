@@ -5,6 +5,10 @@ import { connect } from 'react-redux'
 import * as actions from '../actions'
 
 export class ConfirmPopup extends Component {
+  constructor(props) {
+    super(props)
+    this.handleKeyDown = this.handleKeyDown.bind(this)
+  }
   onClose(e) {
     if (e) {
       e.preventDefault()
@@ -27,11 +31,11 @@ export class ConfirmPopup extends Component {
   }
 
   componentDidMount() {
-    window.addEventListener('keydown', this.handleKeyDown.bind(this))
+    document.addEventListener('keydown', this.handleKeyDown)
   }
 
   componentWillUnmount() {
-    window.removeEventListener('keydown', this.handleKeyDown)
+    document.removeEventListener('keydown', this.handleKeyDown)
   }
 
   renderPopup() {
@@ -59,7 +63,10 @@ export class ConfirmPopup extends Component {
             >
               Close
             </button>
-            <button className="button is-danger">
+            <button
+              type="submit"
+              className="button is-danger"
+            >
               Yes, remove
             </button>
           </footer>
