@@ -10,7 +10,10 @@ import * as actions from '../../actions'
 
 import io from 'socket.io-client'
 
-export const socket = io(process.env.REACT_APP_WEBSOCKET_URL)
+export const socket = io(
+  `${process.env.REACT_APP_WEBSOCKET_URL}/admin`,
+  { transports: ['websocket', 'polling'] }
+)
 
 export class Homepage extends Component {
   componentDidMount() {
