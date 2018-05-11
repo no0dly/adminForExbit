@@ -117,12 +117,14 @@ export const balanceModalReducer = (
       return {
         ...state,
         showed: true,
-        userId: action.payload.userId
+        userId: action.payload.userId,
+        userName: action.payload.userName
       }
     case 'CLOSE_BALANCE_MODAL':
       return {
         showed: false,
         userId: undefined,
+        userName: undefined,
         data: []
       }
     case 'UPDATE_BALANCE_MODAL':

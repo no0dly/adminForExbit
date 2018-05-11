@@ -34,13 +34,15 @@ export class UserBalanceModal extends Component {
     })
   }
   render() {
-    const { userId } = this.props
+    const { userId, userName } = this.props
     return (
       <div className="modal is-active">
         <div className="modal-background" />
         <div className="modal-card">
           <header className="modal-card-head">
-            <p className="modal-card-title">User Id {userId}</p>
+            <p className="modal-card-title">
+              {userName} (#{userId})
+            </p>
             <button
               onClick={ this.closeModal.bind(this) }
               className="delete"
@@ -75,6 +77,7 @@ export class UserBalanceModal extends Component {
 export default connect(state => {
   return {
     userId: state.balanceModal.userId,
+    userName: state.balanceModal.userName,
     data: state.balanceModal.data
   }
 })(UserBalanceModal)

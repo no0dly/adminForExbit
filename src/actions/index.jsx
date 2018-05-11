@@ -109,11 +109,12 @@ export const userGroupsListInit = groups => {
   }
 }
 
-export const openBalanceModal = userId => {
+export const openBalanceModal = (userId, userName) => {
   return {
     type: 'OPEN_BALANCE_MODAL',
     payload: {
-      userId
+      userId,
+      userName
     }
   }
 }

@@ -11,11 +11,11 @@ import 'react-table/react-table.css'
 import * as actions from '../../actions'
 
 export class NewUserTable extends Component {
-  openBalancesModal(id, e) {
+  openBalancesModal(id, username, e) {
     e.preventDefault()
     const { dispatch } = this.props
 
-    dispatch(actions.openBalanceModal(id))
+    dispatch(actions.openBalanceModal(id, username))
   }
   render() {
     const { data, userGroupsList } = this.props
@@ -60,7 +60,8 @@ export class NewUserTable extends Component {
                         href="#"
                         onClick={ this.openBalancesModal.bind(
                           this,
-                          cell.row.user_id
+                          cell.row.user_id,
+                          cell.row.username
                         ) }
                       >
                         {cell.row.balance_eq_btc}
