@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
-import styled, { keyframes } from 'styled-components'
+import { connect } from 'react-redux'
+import styled from 'styled-components'
 // import uuid from 'node-uuid'
 import UserTableGroup from './userTableGroup'
 
@@ -7,7 +8,15 @@ import matchSorter from 'match-sorter'
 import ReactTable from 'react-table'
 import 'react-table/react-table.css'
 
+import * as actions from '../../actions'
+
 export class NewUserTable extends Component {
+  openBalancesModal(id, e) {
+    e.preventDefault()
+    const { dispatch } = this.props
+
+    dispatch(actions.openBalanceModal(id))
+  }
   render() {
     const { data, userGroupsList } = this.props
 
@@ -17,7 +26,8 @@ export class NewUserTable extends Component {
           data={ data }
           filterable
           defaultFilterMethod={ (filter, row) =>
-            String(row[filter.id]) === filter.value }
+            String(row[filter.id]) === filter.value
+          }
           columns={ [
             {
               Header: 'Users',
@@ -40,40 +50,23 @@ export class NewUserTable extends Component {
                   filterAll: true
                 },
                 {
-                  Header: 'Btc free',
-                  id: 'btc_free',
-                  accessor: d => d.balance.btc_free,
-                  filterable: false
-                },
-                {
-                  Header: 'Btc frozen',
-                  id: 'btc_frozen',
-                  accessor: d => d.balance.btc_frozen,
-                  filterable: false
-                },
-                {
-                  Header: 'Btc total',
-                  id: 'btc_total',
-                  accessor: d => d.balance.btc_total,
-                  filterable: false
-                },
-                {
-                  Header: 'Usd free',
-                  id: 'usd_free',
-                  accessor: d => d.balance.usd_free,
-                  filterable: false
-                },
-                {
-                  Header: 'Usd frozen',
-                  id: 'usd_frozen',
-                  accessor: d => d.balance.usd_frozen,
-                  filterable: false
-                },
-                {
-                  Header: 'Usd total',
-                  id: 'usd_total',
-                  accessor: d => d.balance.usd_total,
-                  filterable: false
+                  Header: 'Balance Equivalent, BTC',
+                  id: 'balance_eq_btc',
+                  accessor: d => d.balance_eq_btc,
+                  filterable: false,
+                  Cell: cell => {
+                    return (
+                      <a
+                        href="#"
+                        onClick={ this.openBalancesModal.bind(
+                          this,
+                          cell.row.user_id
+                        ) }
+                      >
+                        {cell.row.balance_eq_btc}
+                      </a>
+                    )
+                  }
                 },
                 {
                   Header: 'Group',
@@ -81,20 +74,24 @@ export class NewUserTable extends Component {
                   accessor: d => d.group,
                   filterable: false,
                   minWidth: 140,
-                  Cell: (cell) => {
+                  Cell: cell => {
                     return (
-                      <UserTableGroup userId={ cell.row.user_id } item={ cell.row._original } field="group" userGroupsList={ userGroupsList } />
+                      <UserTableGroup
+                        userId={ cell.row.user_id }
+                        item={ cell.row._original }
+                        field="group"
+                        userGroupsList={ userGroupsList }
+                      />
                     )
                   }
                 }
-
               ]
             }
           ] }
-          defaultPageSize={20}
-          style={{
-            height: "500px"
-          }}
+          defaultPageSize={ 20 }
+          style={ {
+            height: '500px'
+          } }
           className="-striped -highlight"
         />
       </Wrap>
@@ -112,4 +109,4 @@ const Wrap = styled.div`
   }
 `
 
-export default NewUserTable
+export default connect()(NewUserTable)

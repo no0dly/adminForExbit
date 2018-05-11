@@ -8,32 +8,36 @@ export class UserTable extends Component {
     const { headerNames } = this.props.headers
 
     return headerNames.map((header, idx) => {
-      return <HeaderTh key={ idx }>{ header }</HeaderTh>
+      return <HeaderTh key={ idx }>{header}</HeaderTh>
     })
   }
 
   renderValues(item) {
     const { userGroupsList } = this.props
-    return Object.keys(item).map((field) => {
+    return Object.keys(item).map(field => {
       if (field === 'balance') {
-        return Object.keys(item[field]).map((balanceValue) => {
-          return <td key={ uuid() }>{ item[field][balanceValue] }</td>
+        return Object.keys(item[field]).map(balanceValue => {
+          return <td key={ uuid() }>{item[field][balanceValue]}</td>
         })
       } else if (field === 'group') {
         // debugger
-        return <UserTableGroup userId={ item.user_id } key={ uuid() } item={ item } field={ field } userGroupsList={ userGroupsList } />
+        return (
+          <UserTableGroup
+            userId={ item.user_id }
+            key={ uuid() }
+            item={ item }
+            field={ field }
+            userGroupsList={ userGroupsList }
+          />
+        )
       }
-      return <td key={ uuid() }>{ item[field] }</td>
+      return <td key={ uuid() }>{item[field]}</td>
     })
   }
   renderData() {
     const { data } = this.props
-    return data.map((user) => {
-      return (
-        <TableRow key={ uuid() }>
-          { this.renderValues(user) }
-        </TableRow>
-      )
+    return data.map(user => {
+      return <TableRow key={ uuid() }>{this.renderValues(user)}</TableRow>
     })
   }
 
@@ -46,13 +50,9 @@ export class UserTable extends Component {
         <TableWrap height={ height }>
           <table className="table is-bordered is-striped is-narrow">
             <thead>
-              <tr>
-                { this.renderHeaders() }
-              </tr>
+              <tr>{this.renderHeaders()}</tr>
             </thead>
-            <tbody>
-              { this.renderData() }
-            </tbody>
+            <tbody>{this.renderData()}</tbody>
           </table>
         </TableWrap>
       </Wrap>
@@ -61,7 +61,8 @@ export class UserTable extends Component {
 }
 
 const Wrap = styled.div`
-  .title:not(:last-child), .subtitle:not(:last-child) {
+  .title:not(:last-child),
+  .subtitle:not(:last-child) {
     margin-bottom: 1rem;
   }
   .table td {
@@ -70,7 +71,7 @@ const Wrap = styled.div`
 `
 
 const TableWrap = styled.div`
-  max-height: ${(props) => props.height ? props.height : 'auto'}
+  max-height: ${props => (props.height ? props.height : 'auto')}
   overflow-y: auto;
   table {
     margin-bottom: 0;
@@ -102,7 +103,7 @@ const HeaderTh = styled.th`
   position: sticky;
   top: 0;
   background-color: #0183b4;
-  color: #fff!important;
+  color: #fff !important;
   z-index: 2;
 `
 

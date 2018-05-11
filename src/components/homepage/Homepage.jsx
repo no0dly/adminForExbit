@@ -10,53 +10,52 @@ import * as actions from '../../actions'
 
 import io from 'socket.io-client'
 
-export const socket = io(
-  `${process.env.REACT_APP_WEBSOCKET_URL}/admin`,
-  { transports: ['websocket', 'polling'] }
-)
+export const socket = io(`${process.env.REACT_APP_WEBSOCKET_URL}/admin`, {
+  transports: ['websocket', 'polling']
+})
 
 export class Homepage extends Component {
   componentDidMount() {
     const { dispatch } = this.props
     dispatch(actions.openLoginPopup())
-    socket.on('full_orders_list_init', (response) => {
+    socket.on('full_orders_list_init', response => {
       console.log('full_orders_list_init')
       dispatch(actions.ordersInit(response))
     })
-    socket.on('full_orders_list_add', (response) => {
+    socket.on('full_orders_list_add', response => {
       console.log('full_orders_list_add')
       dispatch(actions.ordersAdd(response))
     })
 
-    socket.on('full_orders_list_remove', (response) => {
+    socket.on('full_orders_list_remove', response => {
       console.log('full_orders_list_remove')
       dispatch(actions.ordersRemove(response.order_id))
     })
 
-    socket.on('full_orders_list_update', (response) => {
+    socket.on('full_orders_list_update', response => {
       console.log('full_orders_list_update')
       dispatch(actions.ordersUpdate(response.order_id, response.amount))
     })
 
-    socket.on('user_info', (response) => {
+    socket.on('user_info', response => {
       console.log('user_info')
       dispatch(actions.updateUser(response))
       dispatch(actions.closeLoginPopup())
     })
 
-    socket.on('users_list_init', (response) => {
+    socket.on('users_list_init', response => {
       console.log('users_list_init')
       dispatch(actions.usersListInit(response))
     })
-    socket.on('users_list_add', (response) => {
+    socket.on('users_list_add', response => {
       console.log('users_list_add')
       dispatch(actions.usersListAdd(response))
     })
-    socket.on('users_list_update', (response) => {
+    socket.on('users_list_update', response => {
       console.log('users_list_update')
       dispatch(actions.usersListUpdate(response))
     })
-    socket.on('usergroups_list', (response) => {
+    socket.on('usergroups_list', response => {
       console.log('usergroups_list')
       dispatch(actions.userGroupsListInit(response))
     })
@@ -68,7 +67,7 @@ export class Homepage extends Component {
       password: data.password
     }
 
-    socket.emit('login', credentials, (response) => {
+    socket.emit('login', credentials, response => {
       console.log('login')
       if (!response.success) {
         dispatch(actions.setError(response.error))
@@ -87,17 +86,26 @@ export class Homepage extends Component {
     dispatch(actions.closeConfirmPopup())
   }
   removeMyorder() {
-    const { orderId } = this.props
-    const callback = (response) => {
+    const { orderId, currencyPair } = this.props
+
+    const callback = response => {
       console.log('order_remove_result')
       if (response.success) {
-        this.notify.success('Success', `${response.success}, order ID: ${orderId}`, 4000)
+        this.notify.success(
+          'Success',
+          `${response.success}, order ID: ${orderId}`,
+          4000
+        )
       } else {
         this.notify.error('Error', `${response.error}`, 4000)
       }
       this.onConfirm()
     }
-    socket.emit('order_remove', { 'order_id': orderId }, callback.bind(this))
+    socket.emit(
+      'order_remove',
+      { order_id: orderId, currency_pair: currencyPair },
+      callback.bind(this)
+    )
   }
 
   renderConfirm() {
@@ -108,6 +116,7 @@ export class Homepage extends Component {
   }
   render() {
     const { children, user } = this.props
+
     const renderContent = () => {
       if (user.username) {
         return children
@@ -115,15 +124,12 @@ export class Homepage extends Component {
     }
     return (
       <div>
-        <div className="columns is-multiline">
-          { renderContent() }
-        </div>
+        <div className="columns is-multiline">{renderContent()}</div>
         <NotifyWrap>
-          <ReactNotify ref={ (com) => this.notify = com } />
+          <ReactNotify ref={ com => (this.notify = com) } />
         </NotifyWrap>
         <LoginPopup onSubmit={ this.onSubmit.bind(this) } />
-        { this.renderConfirm() }
-
+        {this.renderConfirm()}
       </div>
     )
   }
@@ -146,7 +152,7 @@ const NotifyWrap = styled.div`
   .notify-item {
     width: 250px;
     margin: 5px 10px;
-    color: #FFF;
+    color: #fff;
     border-radius: 5px;
   }
 
@@ -158,7 +164,7 @@ const NotifyWrap = styled.div`
   .notify-item > p {
     font-family: 'Lora', serif;
     margin: 10px;
-    opacity: .8;
+    opacity: 0.8;
   }
 
   .notify-item.success {
@@ -178,12 +184,11 @@ const NotifyWrap = styled.div`
   }
 `
 
-export default connect(
-  (state) => {
-    return {
-      user: state.user,
-      orderId: state.confirmPopup.orderId,
-      showed: state.confirmPopup.showed
-    }
+export default connect(state => {
+  return {
+    user: state.user,
+    orderId: state.confirmPopup.orderId,
+    currencyPair: state.confirmPopup.currencyPair,
+    showed: state.confirmPopup.showed
   }
-)(Homepage)
+})(Homepage)

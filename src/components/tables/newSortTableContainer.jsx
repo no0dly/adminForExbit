@@ -7,6 +7,7 @@ import NewSortTable from './newSortTable'
 export class NewSortTableContainer extends Component {
   render() {
     const { orders } = this.props
+
     return (
       <div className="column is-12">
         <NewSortTable orders={ orders } />
@@ -15,10 +16,8 @@ export class NewSortTableContainer extends Component {
   }
 }
 
-export default connect(
-  (state) => {
-    return {
-      orders: state.orders
-    }
+export default connect(state => {
+  return {
+    orders: state.orders
   }
-)(NewSortTableContainer)
+})(NewSortTableContainer)

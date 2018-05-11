@@ -11,16 +11,14 @@ import 'bulma/css/bulma.css'
 
 import * as store from './store/configureStore'
 
-fetch(process.env.REACT_APP_HTTP_URL,
-  {
+window
+  .fetch(process.env.REACT_APP_HTTP_URL, {
     credentials: 'include'
-  }
-).then((res) => {
-  ReactDOM.render(
-    <Provider store={ store.configure() }>
-      {router}
-    </Provider>,
-    document.getElementById('root')
-  )
-  registerServiceWorker()
-})
+  })
+  .then(res => {
+    ReactDOM.render(
+      <Provider store={ store.configure() }>{router}</Provider>,
+      document.getElementById('root')
+    )
+    registerServiceWorker()
+  })

@@ -6,7 +6,8 @@ import {
   ordersReducer,
   confirmPopupReducer,
   usersListReducer,
-  userGroupsListReducer
+  userGroupsListReducer,
+  balanceModalReducer
 } from '../reducers'
 
 export const configure = (initialState = {}) => {
@@ -16,12 +17,17 @@ export const configure = (initialState = {}) => {
     user: userReducer,
     orders: ordersReducer,
     usersList: usersListReducer,
-    userGroupsList: userGroupsListReducer
+    userGroupsList: userGroupsListReducer,
+    balanceModal: balanceModalReducer
   })
 
-  const store = redux.createStore(reducer, initialState, redux.compose(
-    window.devToolsExtension ? window.devToolsExtension() : f => f
-  ))
+  const store = redux.createStore(
+    reducer,
+    initialState,
+    redux.compose(
+      window.devToolsExtension ? window.devToolsExtension() : f => f
+    )
+  )
 
   return store
 }

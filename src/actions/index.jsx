@@ -10,10 +10,13 @@ export const closeLoginPopup = () => {
   }
 }
 
-export const openConfirmPopup = (orderId) => {
+export const openConfirmPopup = (orderId, currencyPair) => {
   return {
     type: 'OPEN_CONFIRM_POPUP',
-    orderId
+    payload: {
+      orderId,
+      currencyPair
+    }
   }
 }
 
@@ -23,7 +26,7 @@ export const closeConfirmPopup = () => {
   }
 }
 
-export const setError = (error) => {
+export const setError = error => {
   return {
     type: 'SET_ERROR',
     error
@@ -36,7 +39,7 @@ export const clearError = () => {
   }
 }
 
-export const updateUser = (user) => {
+export const updateUser = user => {
   return {
     type: 'UPDATE_USER',
     user
@@ -49,21 +52,21 @@ export const clearUser = () => {
   }
 }
 
-export const ordersInit = (orders) => {
+export const ordersInit = orders => {
   return {
     type: 'ORDERS_INIT',
     orders
   }
 }
 
-export const ordersAdd = (order) => {
+export const ordersAdd = order => {
   return {
     type: 'ORDERS_ADD',
     order
   }
 }
 
-export const ordersRemove = (id) => {
+export const ordersRemove = id => {
   return {
     type: 'ORDERS_REMOVE',
     id
@@ -78,30 +81,52 @@ export const ordersUpdate = (id, amount) => {
   }
 }
 
-export const usersListInit = (users) => {
+export const usersListInit = users => {
   return {
     type: 'USERS_LIST_INIT',
     users
   }
 }
 
-export const usersListAdd = (user) => {
+export const usersListAdd = user => {
   return {
     type: 'USERS_LIST_ADD',
     user
   }
 }
 
-export const usersListUpdate = (user) => {
+export const usersListUpdate = user => {
   return {
     type: 'USERS_LIST_UPDATE',
     user
   }
 }
 
-export const userGroupsListInit = (groups) => {
+export const userGroupsListInit = groups => {
   return {
     type: 'USER_GROUPS_LIST_INIT',
     groups
+  }
+}
+
+export const openBalanceModal = userId => {
+  return {
+    type: 'OPEN_BALANCE_MODAL',
+    payload: {
+      userId
+    }
+  }
+}
+
+export const closeBalanceModal = () => {
+  return {
+    type: 'CLOSE_BALANCE_MODAL'
+  }
+}
+
+export const updateBalanceModal = balance => {
+  return {
+    type: 'UPDATE_BALANCE_MODAL',
+    payload: { balance }
   }
 }

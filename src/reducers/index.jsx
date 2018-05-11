@@ -42,9 +42,9 @@ export const ordersReducer = (state = [], action) => {
     case 'ORDERS_INIT':
       return action.orders
     case 'ORDERS_ADD':
-      return [ action.order, ...state ]
+      return [action.order, ...state]
     case 'ORDERS_UPDATE':
-      return state.map((order) => {
+      return state.map(order => {
         if (order.order_id === action.id) {
           order.amount = action.amount
         }
@@ -64,12 +64,14 @@ export const confirmPopupReducer = (state = { showed: false }, action) => {
     case 'OPEN_CONFIRM_POPUP':
       return {
         showed: true,
-        orderId: action.orderId
+        orderId: action.payload.orderId,
+        currencyPair: action.payload.currencyPair
       }
     case 'CLOSE_CONFIRM_POPUP':
       return {
         showed: false,
-        orderId: undefined
+        orderId: undefined,
+        currencyPair: undefined
       }
     default:
       return state
@@ -81,9 +83,9 @@ export const usersListReducer = (state = [], action) => {
     case 'USERS_LIST_INIT':
       return action.users
     case 'USERS_LIST_ADD':
-      return [ action.user, ...state ]
+      return [action.user, ...state]
     case 'USERS_LIST_UPDATE':
-      return state.map((user) => {
+      return state.map(user => {
         if (user.user_id === action.user.user_id) {
           for (let value in user.balance) {
             user.balance[value] = action.user.balance[value]
@@ -101,6 +103,33 @@ export const userGroupsListReducer = (state = [], action) => {
   switch (action.type) {
     case 'USER_GROUPS_LIST_INIT':
       return action.groups
+    default:
+      return state
+  }
+}
+
+export const balanceModalReducer = (
+  state = { showed: false, data: [] },
+  action
+) => {
+  switch (action.type) {
+    case 'OPEN_BALANCE_MODAL':
+      return {
+        ...state,
+        showed: true,
+        userId: action.payload.userId
+      }
+    case 'CLOSE_BALANCE_MODAL':
+      return {
+        showed: false,
+        userId: undefined,
+        data: []
+      }
+    case 'UPDATE_BALANCE_MODAL':
+      return {
+        ...state,
+        data: [...action.payload.balance]
+      }
     default:
       return state
   }

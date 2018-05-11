@@ -17,7 +17,7 @@ export class MyorderTable extends Component {
     const { headerNames } = this.props.headers
 
     return headerNames.map((header, idx) => {
-      return <HeaderTh key={ idx }> { header } </HeaderTh>
+      return <HeaderTh key={ idx }> {header} </HeaderTh>
     })
   }
 
@@ -31,31 +31,23 @@ export class MyorderTable extends Component {
   renderData() {
     const { data } = this.props
 
-    return data.map((item) => {
+    return data.map(item => {
       const date = moment.unix(item.created_at).format('DD/MM/YYYY hh:mm:ss')
       const { side, amount, price, user } = item
       const id = item.order_id
 
       return (
         <TableRow key={ id }>
-          <td>
-            { date }
-          </td>
-          <td>
-            { side }
-          </td>
-          <td>
-            { amount }
-          </td>
-          <td>
-            { price }
-          </td>
-          <td>
-            { user }
-          </td>
+          <td>{date}</td>
+          <td>{side}</td>
+          <td>{amount}</td>
+          <td>{price}</td>
+          <td>{user}</td>
           <ActionCell>
-            <a onClick={ this.openConfirmPopup.bind(this, id) }
-              className="button is-danger" >
+            <a
+              onClick={ this.openConfirmPopup.bind(this, id) }
+              className="button is-danger"
+            >
               Remove
             </a>
           </ActionCell>
@@ -72,13 +64,9 @@ export class MyorderTable extends Component {
         <TableWrap height={ height }>
           <table className="table is-bordered is-striped is-narrow">
             <thead>
-              <tr>
-                { this.renderHeaders() }
-              </tr>
+              <tr>{this.renderHeaders()}</tr>
             </thead>
-            <tbody>
-              { this.renderData() }
-            </tbody>
+            <tbody>{this.renderData()}</tbody>
           </table>
         </TableWrap>
       </Wrap>
@@ -87,13 +75,14 @@ export class MyorderTable extends Component {
 }
 
 const Wrap = styled.div`
-  .title:not(:last-child), .subtitle:not(:last-child) {
+  .title:not(:last-child),
+  .subtitle:not(:last-child) {
     margin-bottom: 1rem;
   }
 `
 
 const TableWrap = styled.div`
-  max-height: ${(props) => props.height ? props.height : 'auto'}
+  max-height: ${props => (props.height ? props.height : 'auto')}
   overflow-y: auto;
   table {
     margin-bottom: 0;
@@ -101,7 +90,7 @@ const TableWrap = styled.div`
 `
 
 const ActionCell = styled.td`
-  vertical-align: middle!important;
+  vertical-align: middle !important;
   text-align: center;
   .button {
     font-size: 0.625rem;
@@ -131,7 +120,7 @@ const HeaderTh = styled.th`
   position: sticky;
   top: 0;
   background-color: #0183b4;
-  color: #fff!important;
+  color: #fff !important;
   z-index: 2;
 `
 

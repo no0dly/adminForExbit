@@ -11,11 +11,11 @@ import 'react-table/react-table.css'
 import * as actions from '../../actions'
 
 export class NewSortTable extends Component {
-  openConfirmPopup(id, e) {
+  openConfirmPopup(id, currencyPair, e) {
     e.preventDefault()
 
     const { dispatch } = this.props
-    dispatch(actions.openConfirmPopup(id))
+    dispatch(actions.openConfirmPopup(id, currencyPair))
   }
   render() {
     const { orders } = this.props
@@ -25,17 +25,25 @@ export class NewSortTable extends Component {
           data={ orders }
           filterable
           defaultFilterMethod={ (filter, row) =>
-            String(row[filter.id]) === filter.value }
+            String(row[filter.id]) === filter.value
+          }
           columns={ [
             {
               Header: 'Open Orders',
               columns: [
                 {
+                  Header: 'Currency Pair',
+                  id: 'currency_pair',
+                  accessor: d => d.currency_pair,
+                  filterable: false
+                },
+                {
                   Header: 'Date',
                   id: 'date',
                   accessor: d => d.created_at,
                   filterable: false,
-                  Cell: ({ value }) => moment.unix(value).format('DD/MM/YYYY hh:mm:ss')
+                  Cell: ({ value }) =>
+                    moment.unix(value).format('DD/MM/YYYY hh:mm:ss')
                 },
                 {
                   Header: 'Order ID',
@@ -78,25 +86,30 @@ export class NewSortTable extends Component {
                   id: 'action',
                   accessor: d => d.action,
                   filterable: false,
-                  Cell: (cell) => {
+                  Cell: cell => {
                     return (
                       <ActionCell>
-                        <a onClick={ this.openConfirmPopup.bind(this, cell.row.id) }
-                          className="button is-danger" >
+                        <a
+                          onClick={ this.openConfirmPopup.bind(
+                            this,
+                            cell.row.id,
+                            cell.row.currency_pair
+                          ) }
+                          className="button is-danger"
+                        >
                           Remove
                         </a>
                       </ActionCell>
                     )
                   }
                 }
-
               ]
             }
           ] }
-          defaultPageSize={20}
-          style={{
-            height: "500px"
-          }}
+          defaultPageSize={ 20 }
+          style={ {
+            height: '500px'
+          } }
           className="-striped -highlight"
         />
       </Wrap>
@@ -120,7 +133,6 @@ const Wrap = styled.div`
   }
   .rt-tr-group {
     .rt-td {
-
     }
     .animated {
       animation-name: ${adding};
