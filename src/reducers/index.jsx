@@ -136,3 +136,24 @@ export const balanceModalReducer = (
       return state
   }
 }
+
+export const statusListReducer = (state = {}, action) => {
+  switch (action.type) {
+    case 'SYSTEM_STATUS_LIST_INIT':
+      return {
+        ...action.statusList
+      }
+    case 'SYSTEM_STATUS_LIST_MODULE_ONLINE':
+      const moduleName = action.module
+      let newState = { ...state }
+      newState[moduleName] = true
+      return newState
+    case 'SYSTEM_STATUS_LIST_MODULE_OFFLINE':
+      const moduleOfflineName = action.module
+      let newOfflineState = { ...state }
+      newOfflineState[moduleOfflineName] = false
+      return newOfflineState
+    default:
+      return state
+  }
+}

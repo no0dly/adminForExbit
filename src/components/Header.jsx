@@ -6,7 +6,7 @@ import Logo from '../images/Logo.svg'
 
 import Nav from './navigation/Nav'
 
-const Header = (props) => {
+const Header = props => {
   return (
     <Wrap className="container">
       <LogoWrap to="/">
@@ -22,6 +22,11 @@ const Header = (props) => {
         <Link to="users" activeClassName="active">
           <span className="icon has-text-success">
             <i className="fa fa-user" />
+          </span>
+        </Link>
+        <Link to="system-status" activeClassName="active">
+          <span className="icon has-text-success">
+            <i className="fa fa-battery-full" />
           </span>
         </Link>
       </TitleWrap>
@@ -63,7 +68,6 @@ const TitleWrap = styled.div`
       color: #3273dc !important;
     }
   }
-
 `
 
 export default Header

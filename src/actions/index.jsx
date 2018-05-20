@@ -131,3 +131,24 @@ export const updateBalanceModal = balance => {
     payload: { balance }
   }
 }
+
+export const systemStatusListInit = statusList => {
+  return {
+    type: 'SYSTEM_STATUS_LIST_INIT',
+    statusList
+  }
+}
+
+export const systemStatusListModuleOffline = moduleObj => {
+  return {
+    type: 'SYSTEM_STATUS_LIST_MODULE_OFFLINE',
+    module: moduleObj.module
+  }
+}
+
+export const systemStatusListModuleOnline = moduleObj => {
+  return {
+    type: 'SYSTEM_STATUS_LIST_MODULE_ONLINE',
+    module: moduleObj.module
+  }
+}

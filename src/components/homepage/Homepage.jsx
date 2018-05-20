@@ -59,6 +59,19 @@ export class Homepage extends Component {
       console.log('usergroups_list')
       dispatch(actions.userGroupsListInit(response))
     })
+
+    socket.on('system_status_init', response => {
+      console.log('system_status_init')
+      dispatch(actions.systemStatusListInit(response))
+    })
+    socket.on('module_offline', response => {
+      console.log('module_offline')
+      dispatch(actions.systemStatusListModuleOffline(response))
+    })
+    socket.on('module_online', response => {
+      console.log('module_online')
+      dispatch(actions.systemStatusListModuleOnline(response))
+    })
   }
   onSubmit(data) {
     const { dispatch } = this.props
