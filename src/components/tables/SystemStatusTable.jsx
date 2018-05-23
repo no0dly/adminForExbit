@@ -7,26 +7,28 @@ import styled from 'styled-components'
 export class SystemStatusTable extends Component {
   renderList() {
     const { modules } = this.props
-    return Object.keys(modules).map(module => {
-      return (
-        <tr key={ module }>
-          <th>{module}</th>
-          <Th
-            className={
-              modules[module]
-                ? 'has-text-centered green'
-                : 'has-text-centered red'
-            }
-          >
-            <i
-              title={ modules[module] ? 'online' : 'offline' }
-              className="fa fa-circle"
-              aria-hidden="true"
-            />
-          </Th>
-        </tr>
-      )
-    })
+    return Object.keys(modules)
+      .sort()
+      .map(module => {
+        return (
+          <tr key={ module }>
+            <th>{module}</th>
+            <Th
+              className={
+                modules[module]
+                  ? 'has-text-centered green'
+                  : 'has-text-centered red'
+              }
+            >
+              <i
+                title={ modules[module] ? 'online' : 'offline' }
+                className="fa fa-circle"
+                aria-hidden="true"
+              />
+            </Th>
+          </tr>
+        )
+      })
   }
   render() {
     // const { modules } = this.props
